@@ -6,51 +6,59 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-        apt-utils \
-        automake \
-        autotools-dev \
-        build-essential \
-        ca-certificates \
-        cmake \
-        curl \
-        ffmpeg \
-        g++ \
-        gcc \
-        git \
-        libbz2-dev \
-        libcurl4-gnutls-dev \
-        libffi-dev \
-        libfuse-dev \
-        libglib2.0-0 \
-        liblzma-dev \
-        libncurses5-dev \
-        libreadline-dev \
-        libsm6 \
-        libsqlite3-dev \
-        libssl-dev \
-        libxext6 \
-        libxml2-dev \
-        libxmlsec1-dev \
-        libxrender-dev \
-        llvm \
-        make \
-        mecab-ipadic-utf8 \
-        net-tools \
-        ninja-build \
-        pkg-config \
-        sudo \
-        tk-dev \
-        vim \
-        wget \
-        xz-utils \
-        zlib1g-dev \
-        zsh
+    apt-utils \
+    automake \
+    autotools-dev \
+    build-essential \
+    ca-certificates \
+    cmake \
+    curl \
+    ffmpeg \
+    g++ \
+    gcc \
+    git \
+    libbz2-dev \
+    libcurl4-gnutls-dev \
+    libffi-dev \
+    libfuse-dev \
+    libglib2.0-0 \
+    liblzma-dev \
+    libncurses5-dev \
+    libreadline-dev \
+    libsm6 \
+    libsqlite3-dev \
+    libssl-dev \
+    libxext6 \
+    libxml2-dev \
+    libxmlsec1-dev \
+    libxrender-dev \
+    llvm \
+    locales \
+    lzma \
+    make \
+    mecab-ipadic-utf8 \
+    net-tools \
+    ninja-build \
+    pkg-config \
+    sudo \
+    tk-dev \
+    vim \
+    wget \
+    xz-utils \
+    zlib1g-dev \
+    zsh && \
+    apt-get clean
 
 # Change Time Zone
 RUN TZ=Asia/Shanghai && \
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
+
+# Set the locale
+RUN locale-gen en_US.UTF-8 && \
+    echo "export LC_ALL=en_US.UTF-8" >> /etc/profile && \
+    echo "export LANG=en_US.UTF-8" >> /etc/profile
 
 # Setup default user
 ARG USERNAME=work
@@ -79,19 +87,6 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USERNAME/.fzf
 
 # Configure vim
 COPY vimrc /etc/vim/vimrc
-
-# Install PyEnv
-# Set-up necessary Env vars for PyEnv
-ENV PYENV_ROOT /home/$USERNAME/.pyenv
-ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-ENV PYTHON_VERSION 3.8.12
-RUN set -ex \
-    && curl https://pyenv.run | bash \
-    && pyenv update \
-    && pyenv install $PYTHON_VERSION \
-    && pyenv global $PYTHON_VERSION \
-    && pyenv rehash
-
 
 WORKDIR /home/$USERNAME
 CMD ["zsh"]
