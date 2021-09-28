@@ -79,7 +79,7 @@ RUN echo "exec $(which zsh)" >> /home/$USERNAME/.bashrc && \
     wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true && \
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-COPY .zshrc /home/$USERNAME/.zshrc
+COPY --chown=$USERNAME .zshrc /home/$USERNAME/.zshrc
 
 # Install FZF
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git /home/$USERNAME/.fzf && \
