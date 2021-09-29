@@ -17,6 +17,7 @@ RUN apt-get update && \
     g++ \
     gcc \
     git \
+    less \
     libbz2-dev \
     libcurl4-gnutls-dev \
     libffi-dev \
@@ -40,6 +41,7 @@ RUN apt-get update && \
     net-tools \
     ninja-build \
     pkg-config \
+    ssh \
     sudo \
     tk-dev \
     vim \
